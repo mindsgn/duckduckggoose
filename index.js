@@ -850,22 +850,23 @@ app.use(function(req, response, next) {
   next();
 });
 
+app.use(express.static(path.join(__dirname, './front/build')));
+
 app.get('/', function(request, response){
  	response.sendFile(path.join(__dirname+'/front/build/'));
 });
 
 app.get('/update', function(request, response){
-  text = request.body.text;
-  console.log(request.body.text);
-  console.log("update");
+  console.log(request.query.text);
+  console.log(request.query.color);
 });
 
 app.get('/on', function(request, response){
-  init();
+  console.log(request);
 });
 
 app.get('/off', function(request, response){
-  off();
+  console.log(request);
 });
 
 //if page not found

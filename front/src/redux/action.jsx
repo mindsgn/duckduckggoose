@@ -8,12 +8,12 @@ let time = null;
 let date = null;
 let data = {};
 
-const socket = io('http://banner.local');
+const socket = io('http://localhost:5000');
 
 // login user
 export const update = (text, color) => (dispatch) => {
   try{
-    axios.post('http://banner.local:5000/update', {
+    axios.get('http://localhost:5000/update', {
       params: {
         text: text,
         color: color,
@@ -32,7 +32,7 @@ export const update = (text, color) => (dispatch) => {
 
 export const on = () => (dispatch) => {
   try{
-    axios.post('http://banner.local:5000/on', {
+    axios.get('http://localhost:5000/on', {
       params: {}
     })
     .then(function (response) {
@@ -48,7 +48,7 @@ export const on = () => (dispatch) => {
 
 export const off = () => (dispatch) => {
   try{
-    axios.post('http://banner.local:5000/off', {
+    axios.get('http://localhost:5000/off', {
       params: {}
     })
     .then(function (response) {
