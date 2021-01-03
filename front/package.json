@@ -11,6 +11,7 @@
     "konva": "^7.2.0",
     "led-matrix": "^1.0.1",
     "matrix-display-store": "^1.0.0",
+    "p5": "^1.1.9",
     "react": "^17.0.1",
     "react-color": "^2.19.3",
     "react-dom": "^17.0.1",

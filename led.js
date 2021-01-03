@@ -17,8 +17,6 @@ let timer = null;
 let config = null;
 let pixels = null;
 let text = 'duck duck goose! clothes etc. 120 bree street. featuring: beau beau. beautiful boys. good good good. nolusizo weavers. rich mnisi. sindiso khumalo. thebe magugu. the other records. lekker boooiii!!'+ " ";
-
-//let text = 'duck duck goose!'+ " ";
 let loop = null;
 let textColor = null;
 let backgroundColor = null;
@@ -82,17 +80,16 @@ const characters = {
           [ 0, 1, 1, 1, 1, 1, 1, 1, 0, 0 ],
         ],
         E: [
-
-              [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
-              [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
-              [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
-              [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
-              [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
-              [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
+            [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
+            [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
+            [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
+            [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
+            [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
+            [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
+            [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
         ],
         F: [
             [ 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
@@ -548,30 +545,6 @@ const characters = {
               [ 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0 ],
         ],
         BF: [
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0, 0, 0, 0, 0 ],
-              [ 0, 1, 1, 1, 1, 1, 1, 0 ],
-              [ 0, 1, 1, 1, 1, 1, 1, 0 ],
-        ],
-        BG: [
-              [ 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0 ],
-              [ 0, 0, 0, 0 ],
-              [ 0, 1, 1, 0 ],
-              [ 0, 1, 1, 0 ],
-              [ 0, 0, 1, 0 ],
-        ],
-        BH: [
           [ 0, 0, 0, 1, 1, 1, 1, 0, 0, 0 ],
           [ 0, 1, 0, 0, 0, 0, 0, 1, 0, 0 ],
           [ 0, 1, 0, 1, 1, 1, 1, 0, 1, 0 ],
@@ -599,31 +572,9 @@ loop = 1;
 textColor = randomRGBA();
 backgroundColor = 0x000000;
 color = 0xFBD11;
-speed = 0.05;
+speed = 0.000000001;
 
-function rgba2hex(orig) {
-  var a, isPercent,
-    rgb = orig.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+),?([^,\s)]+)?/i),
-    alpha = (rgb && rgb[4] || "").trim(),
-    hex = rgb ?
-    (rgb[1] | 1 << 8).toString(16).slice(1) +
-    (rgb[2] | 1 << 8).toString(16).slice(1) +
-    (rgb[3] | 1 << 8).toString(16).slice(1) : orig;
-
-  if (alpha !== "") {
-    a = alpha;
-  } else {
-    a = 01;
-  }
-
-  // multiply before convert to HEX
-  //a = ((a * 255) | 1 << 8).toString(16).slice(1)
-  //console.log(a)
-  //hex = hex + a;
-
-  return(hex);
-}
-
+//all on
 function allon(){
   backgroundColor = randomRGBA();
   for(var i = 0; i<500; i++){
@@ -632,6 +583,7 @@ function allon(){
   ws281x.render(pixels);
 }
 
+//switch off
 function off(){
   for (var i = 0; i < config.leds; i++){
     pixels[i] = 0x111111;
@@ -639,9 +591,22 @@ function off(){
   ws281x.render(pixels);
 }
 
+//scroll text
 function scroll(){
   //allon();
   while(loop>0){
+    try {
+      text = fs.readFileSync('text.txt', { encoding: 'utf8' });
+      textColor = fs.readFileSync('color.txt', { encoding: 'utf8' });
+      backgroundColor = fs.readFileSync('background.txt', { encoding: 'utf8' })
+      textColor = "0x"+textColor;
+      backgroundColor = "0x" + backgroundColor;
+      text = text + " ";
+      //console.log(text, color, background);
+    } catch(err) {
+      console.error(err);
+    }
+
     let textArray = text.split('');
     totalLength = 200;
     //get length of text
@@ -840,6 +805,11 @@ function scroll(){
         lengthArray = characters.BE;
         totalLength = totalLength + lengthArray[0].length;
       }
+
+      if(textArray[x] === "@"){
+        lengthArray = characters.BF;
+        totalLength = totalLength + lengthArray[0].length;
+      }
     }
 
     for(var x = 49; x > -(totalLength); x--){
@@ -848,20 +818,16 @@ function scroll(){
       while(waitTill > new Date()){}
       ws281x.render(pixels);
     }
-    //var waitTill = new Date(new Date().getTime() + speed * 1000);
-    //while(waitTill > new Date()){}
-    //off();
-    //loop--;
-    //console.log(loop)
   }
-  //off();
 }
 
+//get rgba
 function randomRGBA() {
     var o = Math.round, r = Math.random, s = 255
     return Number((o(r()*s)) + '' + (o(r()*s)) + '' + (o(r()*s)));
 }
 
+//convert text
 function convertToText(position){
   let textArray = text.split('');
   let length_ = null;
@@ -1112,15 +1078,23 @@ function convertToText(position){
       length_ = characters.BE;
       position = position + length_[0].length;
     }
+
+    if(textArray[x] === "@"){
+      draw(characters.BF, position);
+      length_ = characters.BF;
+      position = position + length_[0].length;
+    }
   }
 }
 
+//swap colors
 function colorSwap(a, b){
   var temp = a;
   backgroundColor = b
   textColor = temp
 }
 
+//draw characters
 function draw(character, position){
   let len = 0;
   len = character.length;
@@ -1197,160 +1171,5 @@ function draw(character, position){
   }
 };
 
-app.use(function(req, response, next) {
-  response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-app.use(express.static(path.join(__dirname, './front/build')));
-
-//localhost
-app.get('/', function(request, response){
- 	response.sendFile(path.join(__dirname+'/front/build/'));
-});
-
-//update
-app.get('/update', function(request, response){
-  /*try{
-    text = request.query.text + " ";
-    textcolor = request.query.color;
-    loop=10;
-    console.log(color, text)
-    scroll();
-    response.json({success: true});
-  }catch(e){
-  }*/
-});
-
-//on
-app.get('/on', function(request, response){
-  console.log("initializing")
-  init();
-});
-
-//off
-app.get('/off', function(request, response){
-  loop = 0;
-  console.log(loop);
-});
-
-//if page not found
-app.get('*', function(request, response){
-    response.sendFile(path.join(__dirname+'/front/build/'));
-});
-
-//socket connection
-io.on("connection", (socket) => {
-  console.log("new user connected");
-  //add user
-  user ++;
-
-  socket.on('scroll', (data) => {
-    /*console.log(data.text)
-    text = data.text + " ";
-    textColor = 0xFBD11;
-    backgroundColor = 0x000000;
-    scroll();
-    if(user===0){
-      scroll();
-    }else{
-      console.log('done')
-      socket.emit('done');
-    }*/
-    text = data.text;
-    backgroundColor = data.background;
-    backgroundColor = "rgba("+backgroundColor.r+","+backgroundColor.g+","+backgroundColor.b+","+backgroundColor.a+")";
-    backgroundColor = rgba2hex(backgroundColor);
-    textColor = data.color;
-    textColor = "rgba("+textColor.r+","+textColor.g+","+textColor.b+","+textColor.a+")"
-    textColor = rgba2hex(textColor);
-
-    let history = "{"+ text + ","+ textColor +","+backgroundColor+","+new Date()+"},";
-    //console.log("history", history);
-
-    fs.writeFile('text.txt', text, (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        //console.log("written");
-      }
-    });
-
-    //write to
-    fs.writeFile('color.txt', textColor, (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        console.log("written text color");
-      }
-    });
-
-    // background
-    fs.writeFile('background.txt', backgroundColor, (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        console.log("written background color");
-      }
-    });
-
-    //append history to log
-    fs.appendFileSync('history.txt', ""+history+"", (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        //console.log("written history");
-      }
-    });
-  });
-
-  socket.on('all-off', () => {
-    off();
-  });
-
-  socket.on('all-on', () => {
-    allon();
-  });
-
-  socket.on("disconnected", function () {
-    console.log("user disconnected");
-    user --;
-  });
-});
-
-server.listen(port, (error) => console.log(`Server up and running on port ${port}!`));
-
-let color_ = "rgba(255,255,255,1)";
-let background_ = "rgba(0,0,0,0)";
-color_ = rgba2hex(color_);
-background_ = rgba2hex(background_);
-
-//write to text
-fs.writeFile('text.txt', text, (err) => {
-  if (err){
-    //throw err;
-    console.log(err)
-  }else{
-    console.log("written");
-  }
-});
-
-
-//write to
-fs.writeFile('color.txt', color_, (err) => {
-  if (err){
-    console.log(err)
-  }else{
-    console.log("written text color");
-  }
-});
-
-// background
-fs.writeFile('background.txt', background_, (err) => {
-  if (err){
-    console.log(err)
-  }else{
-    console.log("written background color");
-  }
-});
+//scroll text
+scroll();
