@@ -118,6 +118,9 @@ io.on("connection", (socket) => {
 
 server.listen(port, (error) => console.log(`Server up and running on port ${port}!`));
 
+let color_ = "rgba(255,255,255,1)";
+let background_ = "rgba(0,0,0,0)";
+
 //write to text
 fs.writeFile('text.txt', text, (err) => {
   if (err){
@@ -127,6 +130,7 @@ fs.writeFile('text.txt', text, (err) => {
     console.log("written");
   }
 });
+
 
 //write to
 fs.writeFile('color.txt', color_, (err) => {
