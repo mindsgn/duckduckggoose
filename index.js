@@ -11,6 +11,7 @@ const cors = require("cors");
 const uuid = require("uuid-random");
 const port = process.env.PORT || 5000;
 const fs = require('fs');
+io.set('origins', 'http://banner.goodgoodgood.co.za');
 
 let timer = null;
 let config = null;
