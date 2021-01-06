@@ -3,7 +3,7 @@ const http = require("http");
 const app = express();
 const server = http.createServer(app);
 const socket = require("socket.io");
-const io = socket(server, {origins:'*:*'});
+const io = socket(server, {origins:'http://banner.goodgoodgood.co.za'});
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
@@ -11,7 +11,6 @@ const cors = require("cors");
 const uuid = require("uuid-random");
 const port = process.env.PORT || 5000;
 const fs = require('fs');
-io.set('origins', 'http://banner.goodgoodgood.co.za');
 
 let timer = null;
 let config = null;
