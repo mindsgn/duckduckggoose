@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on('background-change', (data) => {
-    let background = data.background;
+    let background = data.color;
     console.log(background)
     socket.emit('update-background', {background: background})
   });

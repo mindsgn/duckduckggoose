@@ -58,11 +58,13 @@ class Main extends Component {
   //handle text change
   handleTextChange = (color) => {
     this.setState({ color: color.rgb })
+    socket.emit('color-change', {color: color})
   };
 
   //change backgroundColor
   handleBackgroundChange = (color) => {
     this.setState({ background: color.rgb })
+    socket.emit('background-change', {color: color})
   };
 
   //update Text
