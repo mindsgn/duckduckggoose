@@ -19,7 +19,7 @@ import  io  from "socket.io-client";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { update, on, off } from './../redux/action';
-let socket = io("http://banner.local:5000");
+let socket = io("https://gooseapp.herokuapp.com/");
 
 const MainStyle = styled.div`
   display: flex;

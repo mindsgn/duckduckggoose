@@ -43,109 +43,29 @@ io.on("connection", (socket) => {
   //add user
   user ++;
 
+  socket.on('color-change', (data) => {
+    let color = data.color;
+    console.log(color)
+    socket.emit('update-color', {color:color})
+  });
+
+  socket.on('background-change', (data) => {
+    let background = data.background;
+    console.log(background)
+    socket.emit('update-background', {background: background})
+  });
+
   socket.on('scroll', (data) => {
-    /*console.log(data.text)
-    text = data.text + " ";
-    textColor = 0xFBD11;
-    backgroundColor = 0x000000;
-    scroll();
-    if(user===0){
-      scroll();
-    }else{
-      console.log('done')
-      socket.emit('done');
-    }*/
-    text = data.text;
-    backgroundColor = data.background;
-    backgroundColor = "rgba("+backgroundColor.r+","+backgroundColor.g+","+backgroundColor.b+","+backgroundColor.a+")";
-    backgroundColor = rgba2hex(backgroundColor);
-    textColor = data.color;
-    textColor = "rgba("+textColor.r+","+textColor.g+","+textColor.b+","+textColor.a+")"
-    textColor = rgba2hex(textColor);
-
-    let history = "{"+ text + ","+ textColor +","+backgroundColor+","+new Date()+"},";
-    //console.log("history", history);
-
-    fs.writeFile('text.txt', text, (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        //console.log("written");
-      }
-    });
-
-    //write to
-    fs.writeFile('color.txt', textColor, (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        console.log("written text color");
-      }
-    });
-
-    // background
-    fs.writeFile('background.txt', backgroundColor, (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        console.log("written background color");
-      }
-    });
-
-    //append history to log
-    fs.appendFileSync('history.txt', ""+history+"", (err) => {
-      if (err){
-        console.log(err)
-      }else{
-        //console.log("written history");
-      }
-    });
-  });
-
-  socket.on('all-off', () => {
-    off();
-  });
-
-  socket.on('all-on', () => {
-    allon();
+    let text = data.text;
+    let background = data.background;
+    let color = data.color;
+    console.log(text, background, color)
+    socket.emit('update', {text: text, background: background, color: color})
   });
 
   socket.on("disconnected", function () {
     console.log("user disconnected");
-    user --;
   });
 });
 
 server.listen(port, (error) => console.log(`Server up and running on port ${port}!`));
-
-let color_ = "rgba(255,255,255,1)";
-let background_ = "rgba(0,0,0,0)";
-
-//write to text
-fs.writeFile('text.txt', text, (err) => {
-  if (err){
-    //throw err;
-    console.log(err)
-  }else{
-    console.log("written");
-  }
-});
-
-
-//write to
-fs.writeFile('color.txt', color_, (err) => {
-  if (err){
-    console.log(err)
-  }else{
-    console.log("written text color");
-  }
-});
-
-// background
-fs.writeFile('background.txt', background_, (err) => {
-  if (err){
-    console.log(err)
-  }else{
-    console.log("written background color");
-  }
-});
