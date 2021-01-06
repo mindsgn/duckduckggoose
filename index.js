@@ -46,13 +46,13 @@ io.on("connection", (socket) => {
   socket.on('color-change', (data) => {
     let color = data.color;
     console.log(color)
-    socket.emit('update-color', {color:color})
+    io.emit('update-color', {color:color})
   });
 
   socket.on('background-change', (data) => {
     let background = data.color;
     console.log(background)
-    socket.emit('update-background', {background: background})
+    io.emit('update-background', {background: background})
   });
 
   socket.on('scroll', (data) => {
@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
     let background = data.background;
     let color = data.color;
     console.log(text, background, color)
-    socket.emit('update', {text: text, background: background, color: color})
+    io.emit('update', {text: text, background: background, color: color})
   });
 
   socket.on("disconnected", function () {
