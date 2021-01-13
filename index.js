@@ -15,6 +15,7 @@ const fs = require('fs');
 let timer = null;
 let config = null;
 let pixels = null;
+let text = null;
 let text = 'duck duck goose! clothes etc. 120 bree street. featuring: beau beau. beautiful boys. good good good. nolusizo weavers. rich mnisi. sindiso khumalo. thebe magugu. the other records. lekker boooiii!!'+ " ";
 
 let user = 0;
@@ -56,11 +57,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on('scroll', (data) => {
-    let text = data.text;
+    text = data.text;
     let background = data.background;
     let color = data.color;
     console.log(text, background, color)
     io.emit('update', {text: text, background: background, color: color})
+  });
+
+  socket.on('text', (data) => {
+    io.emit('update_text', {text: text})
   });
 
   socket.on("disconnected", function () {
