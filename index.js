@@ -15,7 +15,6 @@ const fs = require('fs');
 let timer = null;
 let config = null;
 let pixels = null;
-let text = null;
 let text = 'duck duck goose! clothes etc. 120 bree street. featuring: beau beau. beautiful boys. good good good. nolusizo weavers. rich mnisi. sindiso khumalo. thebe magugu. the other records. lekker boooiii!!'+ " ";
 
 let user = 0;
