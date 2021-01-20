@@ -59,8 +59,9 @@ io.on("connection", (socket) => {
     text = data.text;
     let background = data.background;
     let color = data.color;
-    console.log(text, background, color)
-    io.emit('update', {text: text, background: background, color: color})
+    let speed = data.speed;
+    console.log(text, background, color, speed)
+    io.emit('update', {text: text, background: background, color: color, speed: speed})
   });
 
   socket.on('text', (data) => {

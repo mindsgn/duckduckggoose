@@ -13,12 +13,13 @@ const NavigationStyle = styled.div`
   align-items: center;
   display: flex;
   z-index: 100;
+  background: white;
 `;
 
 function App() {
   return (
     <NavigationStyle>
-      <Title text={'DUCK DUCK GOOSE'} />
+      <Title text={'GOOD GOOD GOOD BANNER'} />
     </NavigationStyle>
   );
 }

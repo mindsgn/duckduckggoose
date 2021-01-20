@@ -1,9 +1,8 @@
 import { Component } from 'react';
 import styled from 'styled-components';
-import { motion } from "framer-motion";
 
 const ButtonStyle = styled.button`
-  background: ${props => props.background ? "#8A2387" : "none"};
+  background: ${props => props.background ? "black" : "none"};
   border: none;
   border: 2px solid white;
   color: white;

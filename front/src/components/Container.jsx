@@ -4,7 +4,7 @@ const ContainerStyle = styled.div`
   position: relative;
   width: 100vw;
   min-height: 100vh;
-  background: black;
+  background: white;
 `;
 
 export default ContainerStyle;

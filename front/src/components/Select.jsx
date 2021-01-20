@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import styled from 'styled-components';
-import { motion } from "framer-motion";
 
 const SelectStyle = styled.div`
   border: 2px solid black;

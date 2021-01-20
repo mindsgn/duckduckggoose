@@ -1,17 +1,10 @@
 import { Component } from 'react';
 import styled from 'styled-components';
 import Row from './Row';
-import Column from './Column';
+import BR from './Break';
 import Button from './Button';
-import FormContainer from './FormContainer';
-import Title from './Title';
 import Input from './Input';
-import Grid from './Grid';
-import Select from './Select';
-import { createStore } from 'matrix-display-store';
-import { LEDMatrix } from 'led-matrix';
-import { Stage, Layer, Rect, Text } from 'react-konva';
-import Konva from 'konva';
+import Title from './Title';
 import { SketchPicker } from 'react-color';
 import  io  from "socket.io-client";
 
@@ -30,7 +23,9 @@ const MainStyle = styled.div`
   align-items: center;
 `;
 
-const store = createStore(32, 16);
+const RangeInput = styled.input`
+  width: 100vw;
+`;
 
 class Main extends Component {
   constructor(props){
@@ -39,6 +34,7 @@ class Main extends Component {
        text: '',
        click: false,
        isScrolling: false,
+       speed: 0,
        color: {
          r: '241',
          g: '112',
@@ -53,12 +49,19 @@ class Main extends Component {
         },
      }
      this.handleNameChange = this.handleNameChange.bind(this);
+     this.handleSpeedChange = this.handleSpeedChange.bind(this);
   }
 
   //handle text change
   handleTextChange = (color) => {
     this.setState({ color: color.rgb })
     socket.emit('color-change', {color: color})
+  };
+
+  //handle text change
+  handleSpeedChange = (speed) => {
+    this.setState({ color: speed })
+    console.log(speed)
   };
 
   //change backgroundColor
@@ -68,7 +71,7 @@ class Main extends Component {
   };
 
   //update Text
-  updateText(text, color, background){
+  updateText(text, color, background, speed){
     this.setState({click:true});
     try{
       console.log(text);
@@ -76,6 +79,7 @@ class Main extends Component {
           text: text,
           color: color,
           background: background,
+          speed: speed
         }
         socket.emit('scroll', data)
         setTimeout(() => {this.setState({click:false}) }, 4000);
@@ -110,39 +114,40 @@ class Main extends Component {
   }
 
   render(){
-   const { update, off, on } = this.props;
 
    return (
      <MainStyle>
       <Row>
         <Input placeholder='whats on our mind?.' onChange={this.handleNameChange}/>
       </Row>
+      <BR />
       <Row>
-        {
-          !this.state.click?
-            <Button text={'Post'} onClick={() => this.updateText(this.state.text, this.state.color, this.state.background) }/>
-            :
-            null
-        }
+        <Title text={'Speed'}/>
       </Row>
       <Row>
-        <Title text={'Text'} />
+        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="1"  onChange={this.handleSpeedChange}/>
       </Row>
+      <BR />
       <Row>
-        <Title text="Text Color" />
-        <Column>
+        <Row>
           <SketchPicker
             color={ this.state.color }
             onChange={ this.handleTextChange } />
-        </Column>
-        <Column>
+        </Row>
+        <Row>
           <SketchPicker
             color={ this.state.background }
             onChange={ this.handleBackgroundChange } />
-        </Column>
+        </Row>
       </Row>
+      <BR />
       <Row>
-        <Title text={'Background'} />
+        {
+          !this.state.click?
+            <Button text={'Post'} onClick={() => this.updateText(this.state.text, this.state.color, this.state.background, this.state.speed) }/>
+            :
+            null
+        }
       </Row>
      </MainStyle>
    );

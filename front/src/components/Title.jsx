@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 const TitleStyle = styled.div`
   font-weight: bold;
   font-size: 21px;
+  color: black;
 `;
 
 class Title extends Component {
