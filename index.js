@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
     websiteSpeed = data.websiteSpeed;
     colorHex = data.colorHex,
     backgroundHex = data.backgroundHex,
-    console.log(data)s
+    console.log(data)
     io.emit('update', {text: text, background: background, color: color, speed: bannerSpeed})
   });
 
