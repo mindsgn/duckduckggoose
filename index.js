@@ -15,7 +15,13 @@ const fs = require('fs');
 let timer = null;
 let config = null;
 let pixels = null;
-let text = 'duck duck goose! clothes etc. 120 bree street. featuring: beau beau. beautiful boys. good good good. nolusizo weavers. rich mnisi. sindiso khumalo. thebe magugu. the other records. lekker boooiii!!'+ " ";
+let text = null;
+let color = null;
+let background = null;
+let colorHex = null;
+let backgroundHex = null;
+let bannerSpeed = null;
+let websiteSpeed = null;
 
 let user = 0;
 
@@ -43,29 +49,25 @@ io.on("connection", (socket) => {
   //add user
   user ++;
 
-  socket.on('color-change', (data) => {
-    let color = data.color;
-    console.log(color)
-    io.emit('update-color', {color:color})
-  });
-
   socket.on('background-change', (data) => {
     let background = data.color;
     console.log(background)
-    io.emit('update-background', {background: background})
+    io.emit('update-background', {background: background});
   });
 
   socket.on('scroll', (data) => {
     text = data.text;
-    let background = data.background;
-    let color = data.color;
-    let speed = data.speed;
-    console.log(text, background, color, speed)
-    io.emit('update', {text: text, background: background, color: color, speed: speed})
+    color = data.color;
+    background = data.background;
+    bannerSpeed = data.speed;
+    websiteSpeed = data.websiteSpeed;
+    colorHex = data.colorHex,
+    backgroundHex = data.backgroundHex,
+    io.emit('update', {text: text, background: background, color: color, speed: bannerSpeed})
   });
 
   socket.on('text', (data) => {
-    io.emit('update_text', {text: text})
+    io.emit('update_text', {text: text, background: backgroundHex, color: colorHex})
   });
 
   socket.on("disconnected", function () {

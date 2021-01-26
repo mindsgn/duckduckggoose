@@ -27,7 +27,6 @@ except (FileNotFoundError, ProcessLookupError) as e:
     os.system('python3 led.py')
 
 
-
 filename = 'background.txt'
 try:
     # Open the file in read mode

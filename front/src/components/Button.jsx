@@ -17,7 +17,10 @@ const ButtonStyle = styled.button`
 class Button extends Component {
   render(){
     return (
-        <ButtonStyle background onClick={this.props.onClick}>
+        <ButtonStyle
+          background
+          disabled={this.props.isDisabled}
+          onClick={this.props.onClick}>
           {this.props.text}
         </ButtonStyle>
     );

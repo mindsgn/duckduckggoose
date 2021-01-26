@@ -1,6 +1,4 @@
 import {
-  UPDATE_LED,
-  UPDATE_COLOR,
   STATE,
 } from './constant';
 

@@ -5,8 +5,11 @@ import BR from './Break';
 import Button from './Button';
 import Input from './Input';
 import Title from './Title';
+import Logo from './Logo';
 import { SketchPicker } from 'react-color';
-import  io  from "socket.io-client";
+import io from "socket.io-client";
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { MOBILE_S, MOBILE_M, MOBILE_L, TABLET, LAPTOP_S, LAPTOP_L, DESKTOP } from '../redux/constant'
 
 //redux
 import PropTypes from 'prop-types';
@@ -23,6 +26,61 @@ const MainStyle = styled.div`
   align-items: center;
 `;
 
+const ColorStyle = styled.div`
+  display: flex;
+  width: 100vw;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  @media (min-width: ${MOBILE_S}) {
+    flex-direction: column;
+  }
+
+  @media (min-width: ${MOBILE_M}) {
+    flex-direction: column;
+  }
+
+  @media (min-width: ${MOBILE_L}) {
+    flex-direction: column;
+  }
+
+  @media (min-width: ${TABLET}) {
+    flex-direction: row;
+  }
+
+  @media (min-width: ${LAPTOP_S}) {
+    flex-direction: row;
+  }
+
+  @media (min-width: ${LAPTOP_L}) {
+    flex-direction: row;
+  }
+
+  @media (min-width: ${DESKTOP}) {
+    flex-direction: row;
+  }
+`;
+
+const Colordiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+`;
+
+const LoadingContainer = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const RangeInput = styled.input`
   width: 100vw;
 `;
@@ -34,55 +92,70 @@ class Main extends Component {
        text: '',
        click: false,
        isScrolling: false,
-       speed: 0,
+       speed: 1,
+       WebsiteSpeed: 1,
        color: {
          r: '241',
          g: '112',
          b: '19',
          a: '1',
         },
-      background: {
+       colorHex:null,
+       background: {
           r: '244',
           g: '230',
           b: '230',
           a: '1',
         },
+       backgroundColor:null,
+       backgroundHex:null,
+       isReady: false,
+       isAuth: false,
+       isDisabled: true,
      }
      this.handleNameChange = this.handleNameChange.bind(this);
      this.handleSpeedChange = this.handleSpeedChange.bind(this);
+     this.handleWebsiteSpeedChange = this.handleWebsiteSpeedChange.bind(this);
   }
 
   //handle text change
   handleTextChange = (color) => {
-    this.setState({ color: color.rgb })
+    this.setState({ color: color.rgb, colorHex: color.hex })
     socket.emit('color-change', {color: color})
   };
 
   //handle text change
   handleSpeedChange = (speed) => {
-    this.setState({ color: speed })
-    console.log(speed)
+    this.setState({ color: speed.target.value })
+  };
+
+  //handle text change
+  handleWebsiteSpeedChange = (speed) => {
+    this.setState({ color: speed.target.value })
   };
 
   //change backgroundColor
   handleBackgroundChange = (color) => {
-    this.setState({ background: color.rgb })
+    this.setState({ background: color.rgb, backgroundHex: color.hex })
     socket.emit('background-change', {color: color})
   };
 
   //update Text
-  updateText(text, color, background, speed){
-    this.setState({click:true});
+  updateText(text, color, background, colorHex, backgroundHex, speed, websiteSpeed){
+    this.setState({click:true, isReady: false});
     try{
       console.log(text);
         let data = {
           text: text,
           color: color,
           background: background,
-          speed: speed
+          colorHex: colorHex,
+          backgroundHex: backgroundHex,
+          speed: speed,
+          websiteSpeed: websiteSpeed
         }
         socket.emit('scroll', data)
-        setTimeout(() => {this.setState({click:false}) }, 4000);
+        setTimeout(() => {this.setState({click:false, isReady: true}) }, 4000);
     }catch(error){
       console.log(error);
     }
@@ -97,7 +170,11 @@ class Main extends Component {
   }
 
   handleNameChange(event){
-    this.setState({text: event.target.value});
+    if(event.target.value===""){
+      this.setState({isDisabled: true});
+    }else{
+      this.setState({text: event.target.value, isDisabled: false});
+    }
   }
 
   componentDidMount(){
@@ -107,6 +184,11 @@ class Main extends Component {
       console.log('done')
       this.updateMe();
     });
+
+    const interval = setInterval(() => {
+      this.setState({isReady: true})
+      //clearInterval(interval)
+    }, 4000);
   }
 
   updateMe(){
@@ -114,41 +196,64 @@ class Main extends Component {
   }
 
   render(){
-
    return (
      <MainStyle>
       <Row>
-        <Input placeholder='whats on our mind?.' onChange={this.handleNameChange}/>
+        <Input placeholder='whats on your mind?.' onChange={this.handleNameChange}/>
       </Row>
       <BR />
       <Row>
-        <Title text={'Speed'}/>
+        <Title text={'LED Speed'}/>
       </Row>
       <Row>
-        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="1"  onChange={this.handleSpeedChange}/>
+        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="0.00000000001"  onChange={this.handleSpeedChange}/>
       </Row>
       <BR />
       <Row>
-        <Row>
+        <Title text={'Website Speed'}/>
+      </Row>
+      <Row>
+        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="0.00000000001"  onChange={this.handleSpeedChange}/>
+      </Row>
+      <BR />
+      <ColorStyle>
+        <Colordiv>
+          <Title text={'Text Color'}/>
           <SketchPicker
             color={ this.state.color }
             onChange={ this.handleTextChange } />
-        </Row>
-        <Row>
+        </Colordiv>
+
+        <Colordiv>
+          <Title text={'Background Color'}/>
           <SketchPicker
             color={ this.state.background }
             onChange={ this.handleBackgroundChange } />
-        </Row>
-      </Row>
+        </Colordiv>
+      </ColorStyle>
       <BR />
       <Row>
         {
           !this.state.click?
-            <Button text={'Post'} onClick={() => this.updateText(this.state.text, this.state.color, this.state.background, this.state.speed) }/>
+            <Button
+              text={'Post'}
+              isDisabled={this.state.isDisabled}
+              onClick={() => this.updateText(this.state.text, this.state.color, this.state.background, this.state.colorHex, this.state.backgroundHex, this.state.speed, this.state.websiteSpeed) }/>
             :
             null
         }
       </Row>
+      {
+        !this.state.isReady?
+          <LoadingContainer>
+            <motion.div
+              animate={{ scale: [0, 1],  opacity: [0, 1]}}>
+              <Logo/>
+            </motion.div>
+          </LoadingContainer>
+        :
+        null
+      }
      </MainStyle>
    );
  }

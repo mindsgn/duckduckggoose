@@ -1,14 +1,5 @@
 import axios  from 'axios';
 import { UPDATE_LED, UPDATE_COLOR, STATE } from './constant';
-import { io } from 'socket.io-client';
-
-let name = null;
-let address = null;
-let time = null;
-let date = null;
-let data = {};
-
-//const socket = io('http://banner.local:5000');
 
 // login user
 export const update = (text, color, backgroundColor) => (dispatch) => {
