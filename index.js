@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on('text', (data) => {
-    io.emit('update_text', {text: text, background: backgroundHex, color: colorHex})
+    io.emit('update_text', {text: text, background: backgroundHex, color: colorHex, speed: websiteSpeed})
   });
 
   socket.on("disconnected", function () {
