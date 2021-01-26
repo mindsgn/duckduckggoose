@@ -18,10 +18,10 @@ let pixels = null;
 let text = null;
 let color = null;
 let background = null;
-let colorHex = null;
-let backgroundHex = null;
+let colorHex = '#ffffff';
+let backgroundHex = '#000000';
 let bannerSpeed = null;
-let websiteSpeed = null;
+let websiteSpeed = 0;
 
 let user = 0;
 

@@ -93,22 +93,21 @@ class Main extends Component {
        click: false,
        isScrolling: false,
        speed: 1,
-       WebsiteSpeed: 1,
+       websiteSpeed: 1,
        color: {
          r: '241',
          g: '112',
          b: '19',
          a: '1',
         },
-       colorHex:null,
+       colorHex:'#000000',
        background: {
           r: '244',
           g: '230',
           b: '230',
           a: '1',
         },
-       backgroundColor:null,
-       backgroundHex:null,
+       backgroundHex: '#ffffff',
        isReady: false,
        isAuth: false,
        isDisabled: true,
@@ -126,12 +125,12 @@ class Main extends Component {
 
   //handle text change
   handleSpeedChange = (speed) => {
-    this.setState({ color: speed.target.value })
+    this.setState({ speed: speed.target.value })
   };
 
   //handle text change
   handleWebsiteSpeedChange = (speed) => {
-    this.setState({ color: speed.target.value })
+    this.setState({ websiteSpeed: speed.target.value })
   };
 
   //change backgroundColor
@@ -152,8 +151,9 @@ class Main extends Component {
           colorHex: colorHex,
           backgroundHex: backgroundHex,
           speed: speed,
-          websiteSpeed: websiteSpeed
+          websiteSpeed: websiteSpeed,
         }
+        console.log(data)
         socket.emit('scroll', data)
         setTimeout(() => {this.setState({click:false, isReady: true}) }, 4000);
     }catch(error){
@@ -213,7 +213,7 @@ class Main extends Component {
         <Title text={'Website Speed'}/>
       </Row>
       <Row>
-        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="0.00000000001"  onChange={this.handleSpeedChange}/>
+        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="0.00000000001"  onChange={this.handleWebsiteSpeedChange}/>
       </Row>
       <BR />
       <ColorStyle>
