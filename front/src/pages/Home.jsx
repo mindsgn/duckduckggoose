@@ -1,14 +1,14 @@
-import { Component } from 'react';
-import Navigation from './../components/Navigation';
-import Container from './../components/Container';
-import Main from './../components/Main';
+import { Component } from "react";
+import Navigation from "./../components/Navigation";
+import Container from "./../components/Container";
+import Main from "./../components/Main";
 
 class App extends Component {
-  render(){
+  render() {
     return (
       <Container>
         <Navigation />
-        <Main/>
+        <Main />
       </Container>
     );
   }

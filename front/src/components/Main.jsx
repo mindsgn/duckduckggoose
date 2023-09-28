@@ -1,21 +1,41 @@
-import { Component } from 'react';
-import styled from 'styled-components';
-import Row from './Row';
-import BR from './Break';
-import Button from './Button';
-import Input from './Input';
-import Title from './Title';
-import Logo from './Logo';
-import { SketchPicker } from 'react-color';
+import { Component } from "react";
+import styled from "styled-components";
+import Row from "./Row";
+import BR from "./Break";
+import Button from "./Button";
+import Input from "./Input";
+import Title from "./Title";
+import Logo from "./Logo";
+import { SketchPicker } from "react-color";
 import io from "socket.io-client";
-import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { MOBILE_S, MOBILE_M, MOBILE_L, TABLET, LAPTOP_S, LAPTOP_L, DESKTOP } from '../redux/constant'
+import { motion } from "framer-motion";
+import {
+  MOBILE_S,
+  MOBILE_M,
+  MOBILE_L,
+  TABLET,
+  LAPTOP_S,
+  LAPTOP_L,
+  DESKTOP,
+} from "../redux/constant";
 
 //redux
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { update, on, off } from './../redux/action';
-let socket = io("https://gooseapp.herokuapp.com/",  { transports: ["websocket"] });
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { update, on, off } from "./../redux/action";
+let socket = io("https://mqtt.goodgoodgood.co.za", {
+  transports: ["websocket"],
+});
+
+const ImageButtons = [
+  { image: "assets/ducks.png", input: "~" },
+  { image: "assets/fullducks.png", input: "`" },
+  { image: "assets/hearts.png", input: "^" },
+  { image: "assets/bat.png", input: "{" },
+  { image: "assets/drops.png", input: "}" },
+  { image: "assets/message.png", input: "[" },
+  { image: "assets/drinks.png", input: "]" },
+];
 
 const MainStyle = styled.div`
   display: flex;
@@ -24,6 +44,18 @@ const MainStyle = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const ImageBackgroundButton = styled.button`
+  width: 250px;
+  height: 100px;
+  background-color: none;
+  background-image: url(${(props) => props.backgroundImage});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
 `;
 
 const ColorStyle = styled.div`
@@ -86,177 +118,213 @@ const RangeInput = styled.input`
 `;
 
 class Main extends Component {
-  constructor(props){
-     super(props);
-     this.state = {
-       text: '',
-       click: false,
-       isScrolling: false,
-       speed: 1,
-       websiteSpeed: 1,
-       color: {
-         r: '241',
-         g: '112',
-         b: '19',
-         a: '1',
-        },
-       colorHex:'#000000',
-       background: {
-          r: '244',
-          g: '230',
-          b: '230',
-          a: '1',
-        },
-       backgroundHex: '#ffffff',
-       isReady: false,
-       isAuth: false,
-       isDisabled: true,
-     }
-     this.handleNameChange = this.handleNameChange.bind(this);
-     this.handleSpeedChange = this.handleSpeedChange.bind(this);
-     this.handleWebsiteSpeedChange = this.handleWebsiteSpeedChange.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: "",
+      click: false,
+      isScrolling: false,
+      speed: 1,
+      websiteSpeed: 1,
+      color: {
+        r: "241",
+        g: "112",
+        b: "19",
+        a: "1",
+      },
+      colorHex: "#000000",
+      background: {
+        r: "244",
+        g: "230",
+        b: "230",
+        a: "1",
+      },
+      backgroundHex: "#ffffff",
+      isReady: false,
+      isAuth: false,
+      isDisabled: true,
+    };
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleSpeedChange = this.handleSpeedChange.bind(this);
+    this.handleWebsiteSpeedChange = this.handleWebsiteSpeedChange.bind(this);
   }
 
-  //handle text change
   handleTextChange = (color) => {
-    this.setState({ color: color.rgb, colorHex: color.hex })
-    socket.emit('color-change', {color: color})
+    this.setState({ color: color.rgb, colorHex: color.hex });
+    socket.emit("color-change", { color: color });
   };
 
-  //handle text change
   handleSpeedChange = (speed) => {
-    this.setState({ speed: speed.target.value })
+    this.setState({ speed: speed.target.value });
   };
 
-  //handle text change
   handleWebsiteSpeedChange = (speed) => {
-    this.setState({ websiteSpeed: speed.target.value })
+    this.setState({ websiteSpeed: speed.target.value });
   };
 
-  //change backgroundColor
   handleBackgroundChange = (color) => {
-    this.setState({ background: color.rgb, backgroundHex: color.hex })
-    socket.emit('background-change', {color: color})
+    this.setState({ background: color.rgb, backgroundHex: color.hex });
+    socket.emit("background-change", { color: color });
   };
 
   //update Text
-  updateText(text, color, background, colorHex, backgroundHex, speed, websiteSpeed){
-    this.setState({click:true, isReady: false});
-    try{
-      console.log(text);
-        let data = {
-          text: text,
-          color: color,
-          background: background,
-          colorHex: colorHex,
-          backgroundHex: backgroundHex,
-          speed: speed,
-          websiteSpeed: websiteSpeed,
-        }
-        console.log(data)
-        socket.emit('scroll', data)
-        setTimeout(() => {this.setState({click:false, isReady: true}) }, 4000);
-    }catch(error){
+  updateText(
+    text,
+    color,
+    background,
+    colorHex,
+    backgroundHex,
+    speed,
+    websiteSpeed
+  ) {
+    this.setState({ click: true, isReady: false });
+    try {
+      let data = {
+        text: text,
+        color: color,
+        background: background,
+        colorHex: colorHex,
+        backgroundHex: backgroundHex,
+        speed: speed,
+        websiteSpeed: websiteSpeed,
+      };
+      socket.emit("scroll", data);
+      setTimeout(() => {
+        this.setState({ click: false, isReady: true });
+      }, 4000);
+    } catch (error) {
       console.log(error);
     }
   }
 
-  allOff(){
-    socket.emit('all-off');
+  allOff() {
+    socket.emit("all-off");
   }
 
-  allOn(){
-    socket.emit('all-on');
+  allOn() {
+    socket.emit("all-on");
   }
 
-  handleNameChange(event){
-    if(event.target.value===""){
-      this.setState({isDisabled: true});
-    }else{
-      this.setState({text: event.target.value, isDisabled: false});
-    }
+  handleNameChange(event) {
+    this.setState({ text: event.target.value, isDisabled: false });
   }
 
-  componentDidMount(){
-    socket.emit('update');
+  componentDidMount() {
+    socket.emit("update");
 
-    socket.on('done',() => {
-      console.log('done')
+    socket.on("done", () => {
       this.updateMe();
     });
 
-    const interval = setInterval(() => {
-      this.setState({isReady: true})
-      //clearInterval(interval)
+    setInterval(() => {
+      this.setState({ isReady: true });
     }, 4000);
   }
 
-  updateMe(){
-    console.log("update");
-  }
+  render() {
+    return (
+      <MainStyle>
+        <Row>
+          <Input
+            value={this.state.text}
+            placeholder="whats on your mind?."
+            onChange={this.handleNameChange}
+          />
+        </Row>
+        <BR />
+        <Row>
+          {ImageButtons.map((item, index) => {
+            return (
+              <ImageBackgroundButton
+                key={index}
+                text={`${item.image}`}
+                backgroundImage={item.image}
+                onClick={() => {
+                  this.setState({ text: `${this.state.text} ${item.input}` });
+                }}
+              />
+            );
+          })}
+        </Row>
 
-  render(){
-   return (
-     <MainStyle>
-      <Row>
-        <Input placeholder='whats on your mind?.' onChange={this.handleNameChange}/>
-      </Row>
-      <BR />
-      <Row>
-        <Title text={'LED Speed'}/>
-      </Row>
-      <Row>
-        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="0.00000000001"  onChange={this.handleSpeedChange}/>
-      </Row>
-      <BR />
-      <Row>
-        <Title text={'Website Speed'}/>
-      </Row>
-      <Row>
-        <RangeInput type="range" name="speed" id="speed" min="0" max="100" step="0.00000000001"  onChange={this.handleWebsiteSpeedChange}/>
-      </Row>
-      <BR />
-      <ColorStyle>
-        <Colordiv>
-          <Title text={'Text Color'}/>
-          <SketchPicker
-            color={ this.state.color }
-            onChange={ this.handleTextChange } />
-        </Colordiv>
+        <BR />
+        <Row>
+          <Title text={"LED Speed"} />
+        </Row>
+        <Row>
+          <RangeInput
+            type="range"
+            name="speed"
+            id="speed"
+            min="0"
+            max="100"
+            step="0.00000000001"
+            onChange={this.handleSpeedChange}
+          />
+        </Row>
+        <BR />
+        <Row>
+          <Title text={"Website Speed"} />
+        </Row>
+        <Row>
+          <RangeInput
+            type="range"
+            name="speed"
+            id="speed"
+            min="0"
+            max="100"
+            step="0.00000000001"
+            onChange={this.handleWebsiteSpeedChange}
+          />
+        </Row>
+        <BR />
+        <ColorStyle>
+          <Colordiv>
+            <Title text={"Text Color"} />
+            <SketchPicker
+              color={this.state.color}
+              onChange={this.handleTextChange}
+            />
+          </Colordiv>
 
-        <Colordiv>
-          <Title text={'Background Color'}/>
-          <SketchPicker
-            color={ this.state.background }
-            onChange={ this.handleBackgroundChange } />
-        </Colordiv>
-      </ColorStyle>
-      <BR />
-      <Row>
-        {
-          !this.state.click?
+          <Colordiv>
+            <Title text={"Background Color"} />
+            <SketchPicker
+              color={this.state.background}
+              onChange={this.handleBackgroundChange}
+            />
+          </Colordiv>
+        </ColorStyle>
+        <BR />
+        <Row>
+          {!this.state.click ? (
             <Button
-              text={'Post'}
+              text={"Post"}
               isDisabled={this.state.isDisabled}
-              onClick={() => this.updateText(this.state.text, this.state.color, this.state.background, this.state.colorHex, this.state.backgroundHex, this.state.speed, this.state.websiteSpeed) }/>
-            :
-            null
-        }
-      </Row>
-      {
-        !this.state.isReady?
+              onClick={() =>
+                this.updateText(
+                  this.state.text,
+                  this.state.color,
+                  this.state.background,
+                  this.state.colorHex,
+                  this.state.backgroundHex,
+                  this.state.speed,
+                  this.state.websiteSpeed
+                )
+              }
+            />
+          ) : null}
+        </Row>
+        {!this.state.isReady ? (
           <LoadingContainer>
-            <motion.div
-              animate={{ scale: [0, 1],  opacity: [0, 1]}}>
-              <Logo/>
+            <motion.div animate={{ scale: [0, 1], opacity: [0, 1] }}>
+              <Logo />
             </motion.div>
           </LoadingContainer>
-        :
-        null
-      }
-     </MainStyle>
-   );
- }
+        ) : null}
+      </MainStyle>
+    );
+  }
 }
 
 Main.propTypes = {
@@ -266,7 +334,7 @@ Main.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  disable: state.states.disable
+  disable: state.states.disable,
 });
 
 export default connect(mapStateToProps, { update, on, off })(Main);
