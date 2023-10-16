@@ -1,8 +1,8 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Button as ButtonContainer } from "@chakra-ui/react";
 
 function Button() {
   return (
-    <Box
+    <ButtonContainer
       display="flex"
       background={"black"}
       padding={5}
@@ -12,7 +12,7 @@ function Button() {
       cursor={"pointer"}
     >
       <Heading color="white">{`SUBMIT`}</Heading>
-    </Box>
+    </ButtonContainer>
   );
 }
 
