@@ -1,7 +1,17 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { SketchPicker } from "react-color";
 
-function ColorPicker() {
+function ColorPicker({
+  textColor,
+  backgroundColor,
+  onChangeText,
+  onChangeBackground,
+}: {
+  textColor: string;
+  backgroundColor: string;
+  onChangeText: any;
+  onChangeBackground: any;
+}) {
   return (
     <Box
       display={"flex"}
@@ -20,7 +30,13 @@ function ColorPicker() {
           <Heading size="md">Text Color</Heading>
         </Box>
         <Box>
-          <SketchPicker />
+          <SketchPicker
+            color={textColor}
+            onChange={(event) => {
+              const { hex, rgb } = event;
+              onChangeText(hex, rgb);
+            }}
+          />
         </Box>
       </Box>
       <Box
@@ -33,7 +49,13 @@ function ColorPicker() {
           <Heading size="md">Background Color</Heading>
         </Box>
         <Box>
-          <SketchPicker />
+          <SketchPicker
+            color={backgroundColor}
+            onChange={(event) => {
+              const { hex, rgb } = event;
+              onChangeBackground(hex, rgb);
+            }}
+          />
         </Box>
       </Box>
     </Box>

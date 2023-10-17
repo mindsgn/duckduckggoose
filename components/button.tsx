@@ -1,6 +1,6 @@
 import { Box, Heading, Button as ButtonContainer } from "@chakra-ui/react";
 
-function Button() {
+function Button({ onClick }: { onClick: any }) {
   return (
     <ButtonContainer
       display="flex"
@@ -10,6 +10,7 @@ function Button() {
       alignItems={"center"}
       borderRadius={10}
       cursor={"pointer"}
+      onClick={onClick}
     >
       <Heading color="white">{`SUBMIT`}</Heading>
     </ButtonContainer>

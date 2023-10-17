@@ -1,20 +1,34 @@
-import { useState } from "react";
-import { Box, Container } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import {
+  Box,
+  Container,
+  Accordion,
+  AccordionItem,
+  AccordionIcon,
+  AccordionButton,
+  AccordionPanel,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderMark,
+  useToast,
+} from "@chakra-ui/react";
 import { Button } from "./button";
 import { TextInput } from "./textInput";
 import io from "socket.io-client";
 import { ColorPicker } from "./ColorPicker";
 import { ImagePicker } from "./imagePicker";
+import { SpeedPicker } from "./speedPicker";
 
 const socket = io("https://mqtt.goodgoodgood.co.za", {
   transports: ["websocket"],
 });
 
 function Main() {
+  const toast = useToast();
   const [data, setData] = useState({
     text: "",
-    click: false,
-    isScrolling: false,
     speed: 1,
     websiteSpeed: 1,
     color: {
@@ -32,22 +46,109 @@ function Main() {
     },
     backgroundHex: "#ffffff",
     isReady: false,
-    isAuth: false,
-    isDisabled: true,
   });
 
   const submit = () => {
     try {
-    } catch (error: any) {}
+      const { text } = data;
+
+      if (text.length === 0) {
+        throw Error;
+      }
+
+      toast({
+        title: "Sent",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Failed to send. please try again",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
   };
 
   return (
     <Box height={"100vh"} width="100vw" paddingTop={100}>
       <Container display="flex" flexDir={"column"}>
-        <TextInput />
-        <ImagePicker />
-        <ColorPicker />
-        <Button />
+        <TextInput
+          onChange={(text: string) => {
+            setData({ ...data, text: text });
+          }}
+          value={data.text}
+        />
+        <Box marginBottom={10}>
+          <Accordion>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left">
+                    Image
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <ImagePicker
+                  onChange={(text: string) => {
+                    setData({ ...data, text: data.text + text });
+                  }}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left">
+                    Color
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <ColorPicker
+                  textColor={data.colorHex}
+                  backgroundColor={data.backgroundHex}
+                  onChangeText={(colorHex: any, color: any) => {
+                    setData({ ...data, color, colorHex });
+                  }}
+                  onChangeBackground={(background: any, backgroundHex: any) => {
+                    setData({ ...data, background, backgroundHex });
+                  }}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="left">
+                    Speed
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <SpeedPicker
+                  onChangeBanner={(event: number) => {
+                    setData({ ...data, speed: event });
+                  }}
+                  onChangeWebsite={(event: number) => {
+                    console.log(event);
+                    setData({ ...data, websiteSpeed: event });
+                  }}
+                />
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </Box>
+
+        <Button onClick={() => submit()} />
       </Container>
     </Box>
   );
