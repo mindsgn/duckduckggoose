@@ -21,10 +21,6 @@ import { ColorPicker } from "./ColorPicker";
 import { ImagePicker } from "./imagePicker";
 import { SpeedPicker } from "./speedPicker";
 
-const socket = io("https://mqtt.goodgoodgood.co.za", {
-  transports: ["websocket"],
-});
-
 function Main() {
   const toast = useToast();
   const [data, setData] = useState({
@@ -45,8 +41,15 @@ function Main() {
       a: "1",
     },
     backgroundHex: "#ffffff",
-    isReady: false,
   });
+
+  const [socket] = useState(
+    io("https://mqtt.goodgoodgood.co.za", {
+      transports: ["websocket"],
+      ackTimeout: 10000,
+      retries: 3,
+    })
+  );
 
   const submit = () => {
     try {
@@ -55,6 +58,8 @@ function Main() {
       if (text.length === 0) {
         throw Error;
       }
+
+      socket.emit("scroll", data);
 
       toast({
         title: "Sent",
@@ -65,7 +70,7 @@ function Main() {
       });
     } catch (error: any) {
       toast({
-        title: "Failed to send. please try again",
+        title: "Failed.",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -73,6 +78,12 @@ function Main() {
       });
     }
   };
+
+  useEffect(() => {
+    socket.on("update", (event) => {
+      console.log("event: ", event);
+    });
+  }, []);
 
   return (
     <Box height={"100vh"} width="100vw" paddingTop={100}>

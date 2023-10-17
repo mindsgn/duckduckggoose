@@ -20,6 +20,8 @@ function SpeedPicker({
       <Heading size={"xs"}>{`Banner Speed`}</Heading>
       <Slider
         aria-label="slider-ex-1"
+        min={1}
+        max={100}
         defaultValue={30}
         onChange={(event) => {
           onChangeBanner(event);
@@ -33,6 +35,8 @@ function SpeedPicker({
       <Heading size={"xs"}>{`Website Speed`}</Heading>
       <Slider
         aria-label="slider-ex-1"
+        min={1}
+        max={100}
         defaultValue={30}
         onChange={(event) => {
           onChangeBanner(event);
