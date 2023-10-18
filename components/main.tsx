@@ -63,13 +63,11 @@ function Main() {
       });
 
       await fetch(request)
-        .then((response) => {
-          if (!response.ok) {
+        .then(async (response) => {
+          if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-          return response.json();
-        })
-        .then((data) => {
+
           toast({
             title: "Sent",
             status: "success",
@@ -78,6 +76,7 @@ function Main() {
             position: "top-right",
           });
         })
+
         .catch((error) => {
           toast({
             title: "Failed.",

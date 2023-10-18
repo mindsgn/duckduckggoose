@@ -1,19 +1,5 @@
 import * as mqtt from "mqtt";
 
-const client: any = mqtt.connect("mqtt://mqtt.goodgoodgood.co.za:1883/banner", {
-  username: `banner`,
-  password: `93paEtwNqcgM9q`,
-});
-
-client.on("error", (err: any) => {
-  console.log("Connection error: ", err);
-  client.end();
-});
-
-client.on("reconnect", () => {
-  console.log("Reconnecting...");
-});
-
 const colorConverter: any = (text: any) => {
   text = text.toString();
   if (text.length == 1) {
@@ -35,6 +21,14 @@ const speedConverter: any = (speed: any) => {
 
 const handler = async (req: any, res: any) => {
   try {
+    const client: any = await mqtt.connect(
+      "mqtt://mqtt.goodgoodgood.co.za:1883/banner",
+      {
+        username: `banner`,
+        password: `93paEtwNqcgM9q`,
+      }
+    );
+
     switch (req.method) {
       case "POST":
         const { text, color, background, speed } = req.body;
@@ -49,11 +43,7 @@ const handler = async (req: any, res: any) => {
         message += speedConverter(speed);
 
         client.publish("banner", message, (success: any, error: any) => {
-          if (!error) {
-            res.status(200).json({});
-          } else {
-            res.status(300).json({});
-          }
+          res.status(200).json({});
         });
 
       default:
@@ -61,6 +51,7 @@ const handler = async (req: any, res: any) => {
         break;
     }
   } catch (error) {
+    console.log(error);
     res.status(300).json();
   }
 };
