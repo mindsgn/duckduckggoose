@@ -7,11 +7,6 @@ import {
   AccordionIcon,
   AccordionButton,
   AccordionPanel,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
   useToast,
 } from "@chakra-ui/react";
 import { Button } from "./button";
@@ -51,23 +46,47 @@ function Main() {
     })
   );
 
-  const submit = () => {
+  const submit = async () => {
     try {
       const { text } = data;
 
       if (text.length === 0) {
         throw Error;
       }
-      //console.log(data);
-      socket.emit("scroll", data);
 
-      toast({
-        title: "Sent",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-        position: "top-right",
+      const request = new Request("/api/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+
+      await fetch(request)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          toast({
+            title: "Sent",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          toast({
+            title: "Failed.",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+            position: "top-right",
+          });
+        });
     } catch (error: any) {
       toast({
         title: "Failed.",
@@ -79,11 +98,7 @@ function Main() {
     }
   };
 
-  useEffect(() => {
-    socket.on("update", (event) => {
-      console.log("event: ", event);
-    });
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Box height={"100vh"} width="100vw" paddingTop={100}>

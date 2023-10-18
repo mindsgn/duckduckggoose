@@ -5,7 +5,7 @@ const ImageButton = [
   { image: "assets/bat.png", input: "{", width: 250 },
   { image: "assets/face.png", input: "<", width: 250 },
   { image: "assets/time.png", input: "±", width: 250 },
-  { image: "assets/table.png", input: "§", width: 250 },
+  { image: "assets/table.png", input: `§`, width: 250 },
   { image: "assets/pants.png", input: "_", width: 100 },
   { image: "assets/music.png", input: "|", width: 100 },
   { image: "assets/mushroom.png", input: "]", width: 250 },
