@@ -25,8 +25,8 @@ function Main() {
   const toast = useToast();
   const [data, setData] = useState({
     text: "",
-    speed: 1,
-    websiteSpeed: 1,
+    speed: 30,
+    websiteSpeed: 30,
     color: {
       r: "241",
       g: "112",
@@ -58,7 +58,7 @@ function Main() {
       if (text.length === 0) {
         throw Error;
       }
-
+      //console.log(data);
       socket.emit("scroll", data);
 
       toast({
@@ -129,7 +129,7 @@ function Main() {
                   onChangeText={(colorHex: any, color: any) => {
                     setData({ ...data, color, colorHex });
                   }}
-                  onChangeBackground={(background: any, backgroundHex: any) => {
+                  onChangeBackground={(backgroundHex: any, background: any) => {
                     setData({ ...data, background, backgroundHex });
                   }}
                 />
@@ -146,11 +146,10 @@ function Main() {
               </h2>
               <AccordionPanel pb={4}>
                 <SpeedPicker
-                  onChangeBanner={(event: number) => {
+                  onChangeBanner={(event: any) => {
                     setData({ ...data, speed: event });
                   }}
-                  onChangeWebsite={(event: number) => {
-                    console.log(event);
+                  onChangeWebsite={(event: any) => {
                     setData({ ...data, websiteSpeed: event });
                   }}
                 />

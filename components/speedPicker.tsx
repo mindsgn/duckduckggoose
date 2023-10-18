@@ -39,7 +39,7 @@ function SpeedPicker({
         max={100}
         defaultValue={30}
         onChange={(event) => {
-          onChangeBanner(event);
+          onChangeWebsite(event);
         }}
       >
         <SliderTrack bg="blackAlpha.300">
