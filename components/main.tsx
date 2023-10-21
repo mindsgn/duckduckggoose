@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { Button } from "./button";
 import { TextInput } from "./textInput";
-import io from "socket.io-client";
 import { ColorPicker } from "./ColorPicker";
 import { ImagePicker } from "./imagePicker";
 import { SpeedPicker } from "./speedPicker";
@@ -38,14 +37,6 @@ function Main() {
     backgroundHex: "#ffffff",
   });
 
-  const [socket] = useState(
-    io("https://mqtt.goodgoodgood.co.za", {
-      transports: ["websocket"],
-      ackTimeout: 10000,
-      retries: 3,
-    })
-  );
-
   const submit = async () => {
     try {
       const { text } = data;
@@ -64,6 +55,7 @@ function Main() {
 
       await fetch(request)
         .then(async (response) => {
+          console.log(response.status);
           if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -78,6 +70,7 @@ function Main() {
         })
 
         .catch((error) => {
+          console.log(error);
           toast({
             title: "Failed.",
             status: "error",
@@ -87,6 +80,7 @@ function Main() {
           });
         });
     } catch (error: any) {
+      console.log(error);
       toast({
         title: "Failed.",
         status: "error",

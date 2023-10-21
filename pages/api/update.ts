@@ -42,13 +42,16 @@ const handler = async (req: any, res: any) => {
         message += colorConverter(background.b);
         message += speedConverter(speed);
 
-        client.publish("banner", message, (success: any, error: any) => {
-          res.status(200).json({});
+        await client.publish("banner", message, (success: any, error: any) => {
+          if (error) {
+            return res.status(400).json({});
+          }
+
+          return res.status(200).json({});
         });
 
       default:
-        res.status(200).json();
-        break;
+        return res.status(200).json();
     }
   } catch (error) {
     console.log(error);
