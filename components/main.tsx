@@ -67,7 +67,15 @@ function Main() {
 
   const submit = async () => {
     try {
-      const { text, color, background, speed, websiteSpeed } = data;
+      const {
+        text,
+        color,
+        background,
+        speed,
+        websiteSpeed,
+        colorHex,
+        backgroundHex,
+      } = data;
 
       if (text.length === 0) {
         throw Error;
@@ -91,8 +99,8 @@ function Main() {
           text,
           message,
           speed: websiteSpeed,
-          color,
-          background,
+          color: colorHex,
+          background: backgroundHex,
         }),
       });
 
