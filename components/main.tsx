@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Button } from "./button";
 import { TextInput } from "./textInput";
+import io from "socket.io-client";
 import { ColorPicker } from "./ColorPicker";
 import { ImagePicker } from "./imagePicker";
 import { SpeedPicker } from "./speedPicker";
@@ -37,25 +38,66 @@ function Main() {
     backgroundHex: "#ffffff",
   });
 
+  const [socket] = useState(
+    io("https://mqtt.goodgoodgood.co.za", {
+      transports: ["websocket"],
+      ackTimeout: 10000,
+      retries: 3,
+    })
+  );
+
+  const colorConverter: any = (text: any) => {
+    text = text.toString();
+    if (text.length == 1) {
+      return "00" + text;
+    } else if (text.length == 2) {
+      return "0" + text;
+    }
+    return text;
+  };
+
+  const speedConverter: any = (speed: any) => {
+    speed = Math.floor(speed);
+    speed = speed.toString();
+    if (speed.length == 1) {
+      return "0" + speed;
+    }
+    return speed;
+  };
+
   const submit = async () => {
     try {
-      const { text } = data;
+      const { text, color, background, speed, websiteSpeed } = data;
 
       if (text.length === 0) {
         throw Error;
       }
 
-      const request = new Request("/api/update", {
+      let message = text.toUpperCase();
+      message += " " + colorConverter(color.g);
+      message += colorConverter(color.r);
+      message += colorConverter(color.b);
+      message += colorConverter(background.g);
+      message += colorConverter(background.r);
+      message += colorConverter(background.b);
+      message += speedConverter(speed);
+
+      const request = new Request(`https://mqtt.goodgoodgood.co.za/post`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          text,
+          message,
+          speed: websiteSpeed,
+          color,
+          background,
+        }),
       });
 
       await fetch(request)
         .then(async (response) => {
-          console.log(response.status);
           if (response.status !== 200) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
@@ -70,7 +112,6 @@ function Main() {
         })
 
         .catch((error) => {
-          console.log(error);
           toast({
             title: "Failed.",
             status: "error",
@@ -80,9 +121,8 @@ function Main() {
           });
         });
     } catch (error: any) {
-      console.log(error);
       toast({
-        title: "Failed.",
+        title: "Failed",
         status: "error",
         duration: 9000,
         isClosable: true,
