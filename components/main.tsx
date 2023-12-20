@@ -82,11 +82,11 @@ function Main() {
       }
 
       let message = text.toUpperCase();
-      message += " " + colorConverter(color.g);
-      message += colorConverter(color.r);
+      message += " " + colorConverter(color.r);
+      message += colorConverter(color.g);
       message += colorConverter(color.b);
-      message += colorConverter(background.g);
       message += colorConverter(background.r);
+      message += colorConverter(background.g);
       message += colorConverter(background.b);
       message += speedConverter(speed);
 
@@ -152,6 +152,7 @@ function Main() {
         />
         <Box marginBottom={10}>
           <Accordion>
+            {/*
             <AccordionItem>
               <h2>
                 <AccordionButton>
@@ -169,6 +170,7 @@ function Main() {
                 />
               </AccordionPanel>
             </AccordionItem>
+            */}
             <AccordionItem>
               <h2>
                 <AccordionButton>
