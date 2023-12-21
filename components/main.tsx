@@ -15,6 +15,8 @@ import io from "socket.io-client";
 import { ColorPicker } from "./ColorPicker";
 import { ImagePicker } from "./imagePicker";
 import { SpeedPicker } from "./speedPicker";
+import MatrixToImage from "./matrix";
+import { matrix } from "../constants";
 
 function Main() {
   const toast = useToast();
@@ -152,7 +154,6 @@ function Main() {
         />
         <Box marginBottom={10}>
           <Accordion>
-            {/*
             <AccordionItem>
               <h2>
                 <AccordionButton>
@@ -163,14 +164,21 @@ function Main() {
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                <ImagePicker
-                  onChange={(text: string) => {
-                    setData({ ...data, text: data.text + text });
-                  }}
-                />
+                {matrix.map((item: any) => {
+                  return (
+                    <Box
+                      margin={2}
+                      onClick={() => {
+                        setData({ ...data, text: data.text + item.symbol });
+                      }}
+                    >
+                      <MatrixToImage matrix={item.matrix} pixelSize={10} />
+                    </Box>
+                  );
+                })}
               </AccordionPanel>
             </AccordionItem>
-            */}
+
             <AccordionItem>
               <h2>
                 <AccordionButton>

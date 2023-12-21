@@ -1,3 +1,4 @@
+import { matrix } from "./matrix";
 const ImageButton = [
   { image: "assets/ducks.png", input: "~", width: 250 },
   { image: "assets/fullducks.png", input: "`", width: 250 },
@@ -14,4 +15,4 @@ const ImageButton = [
   { image: "assets/dog.png", input: "/", width: 250 },
 ];
 
-export { ImageButton };
+export { ImageButton, matrix };
